@@ -1,0 +1,68 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'head.html' %}
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
+
+  <title>LIT Lab Learning Portal</title>
+
+  <style>
+    button:focus {
+      outline: 0;
+    }
+    
+    button:hover {
+      background-color: #EFEFEF;
+    }
+  </style>
+</head>
+
+<body style="background-color: #F8F8F9;">
+  {% include 'navbar.html' %}
+
+  <div class="container-fluid px-5">
+    <div class="mr-5 pr-5" style="display: flex; flex-direction: row; justify-content: space-between; align-items:baseline;">
+      <h1 class="pt-2 mb-4 ml-5 pl-5"> Videos </h1>
+      <a href="/add-video">
+        <button class="btn btn-success" style="font-size: small;"> Add Video</button>
+      </a>
+    </div>
+
+    <div class="ml-5 pl-5 mr-5 pr-5 mb-5 pb-5">
+      {% if success %}
+      <div>
+        <small class="text-success">{{success}}</small>
+      </div>
+      {% endif %}
+      <table class="table table-bordered table-hover m-0" style="background-color: white; font-size: small;">
+        <thead>
+          <tr>
+            <th class="pl-4">ID</th>
+            <th class="pl-4">Title</th>
+            <th class="pl-4">Caption</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for key, value in videos.items() %}
+          <tr role="button" onclick="window.location='/videos?id={{key}}';">
+            <td class="pl-4"> {{key}} </td>
+            <td class="pl-4"> {{value['name']}} </td>
+            <td class="pl-4"> {{value['caption']}} </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

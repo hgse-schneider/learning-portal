@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'head.html' %}
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
+
+  <title>LIT Lab Learning Portal</title>
+
+  <style>
+    button:focus {
+      outline: 0;
+    }
+    
+    button:hover {
+      background-color: #EFEFEF;
+    }
+  </style>
+</head>
+
+<body style="background-color: #F8F8F9;">
+  {% include 'navbar.html' %}
+
+  <div class="container-fluid px-5">
+    <div class="mr-5 pr-5" style="display: flex; flex-direction: row; justify-content: space-between; align-items:baseline;">
+      <h1 class="pt-2 mb-4 ml-5 pl-5"> Users </h1>
+      <a href="/users/add-users">
+        <button class="btn btn-success" style="font-size: small;"> Add User</button>
+      </a>
+    </div>
+
+    <div class="ml-5 pl-5 mr-5 pr-5 mb-5 pb-5">
+      <table class="table table-bordered table-hover m-0" style="background-color: white; font-size: small;">
+        <thead>
+          <tr>
+            <th class="pl-4">ID</th>
+            <th class="pl-4">First Name</th>
+            <th class="pl-4">Last Name</th>
+            <th class="pl-4">Email</th>
+            <th class="pl-4">Account Type</th>
+          </tr>
+        </thead>
+        <tbody>
+          {% for user in users %}
+          <tr>
+            <td class="pl-4"> {{user[0]}} </td>
+            <td class="pl-4"> {{user[2]}} </td>
+            <td class="pl-4"> {{user[3]}} </td>
+            <td class="pl-4"> {{user[1]}} </td>
+            <td class="pl-4"> {{user[4]}} </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

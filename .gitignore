@@ -1,0 +1,10 @@
+# General
+.DS_Store
+.env
+__pycache__
+
+
+# Data files
+tmp/*
+affective_states/*
+zips/*

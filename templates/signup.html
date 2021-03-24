@@ -1,0 +1,67 @@
+<!DOCTYPE html>
+<html lang="en" class="h-100">
+
+<head>
+  {% include 'head.html' %}
+
+  <title>LIT Lab Learning Portal</title>
+
+  <style>
+    button:focus {
+      outline: 0;
+    }
+  </style>
+</head>
+
+<body class="h-100" style="background-color: #F8F8F9;">
+
+  <div class="container h-100">
+    <div class="row h-100 justify-content-center align-items-center">
+      <div class="col-9 col-sm-9 col-md-7 col-lg-5 shadow py-4 px-5 bg-white " style="border-radius: 20px;">
+        <div class="text-center">
+          <img src="{{url_for('static', filename='img/LIT_Logo_Bulb.png')}}" style="height: 100px;" />
+        </div>
+        <h1 class="text-center mt-1 mb-5"> Sign Up </h1>
+        <form action="/signup" method="POST">
+          <div class="form-group row">
+            <div class="col mr-n3">
+              <input value="{{firstname}}" required name="firstname" type="text" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="First Name">
+            </div>
+            <div class="col ">
+              <input value="{{lastname}}" required name="lastname" type="text" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Last Name">
+            </div>
+          </div>
+          <div class="form-group">
+            <input value="{{email}}" required name="email" type="email" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Email Address">
+          </div>
+          <div class="form-group">
+            <input required name="password" type="password" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Password">
+          </div>
+
+          {% if error == 'true' and errormessage == 'This email already exists!' %}
+          <div class="mx-2">
+            <small class="text-danger">{{errormessage}} Did you mean to <a href="/signin" class="text-danger"><u>sign in</u></a>?</small>
+          </div>
+          {% elif error == 'true' %}
+          <div class="mx-2">
+            <small class="text-danger">{{errormessage}}</small>
+          </div>
+          {% endif %}
+
+          <div class="text-center mt-4">
+            <button type="submit" class="btn py-2 px-4 rounded-pill" style="background-color: #1974E8; color: white;">Create Account</button>
+          </div>
+          <small class="form-text text-muted text-center mt-2">Already have an account? <span> <a href="/signin" style="color: #1974E8"> Sign in </a> </span></small>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

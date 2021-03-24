@@ -1,0 +1,124 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+
+<head>
+  {% include 'head.html' %}
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
+
+  <title>LIT Lab Learning Portal</title>
+
+  <style>
+    button {
+      outline: 0;
+      box-shadow: none;
+      border: none;
+    }
+    
+    button:focus {
+      outline: 0;
+    }
+    
+    button:hover {
+      background-color: #EFEFEF;
+    }
+    
+    th {
+      background-color: white !important;
+    }
+  </style>
+</head>
+
+<body style="display: flex; flex-flow: column; height: 100%; background-color: #F8F8F9; width: 100%; overflow: scroll;">
+  {% include 'navbar.html' %}
+
+  <div class="container-fluid px-5">
+    <div class="mr-5 pr-5" style="display: flex; flex-direction: row; justify-content: space-between; align-items:baseline;">
+      <h1 class="pt-2 mb-4 ml-5 pl-5"> Your Data </h1>
+      <a href="/data_file_all">
+        <button class="btn btn-danger" style="font-size: small;"> Download All</button>
+      </a>
+    </div>
+
+
+    <div class="ml-5 pl-5 mr-5 pr-5 mb-5 pb-5">
+      <h6 class="mt-5"> Multimodal Data </h6>
+      <table class="table table-bordered table-hover m-0" style="background-color: white; font-size: small;">
+        <tbody>
+          {% for x in tmp_folders %}
+          <tr>
+            <th rowspan=4 class="pl-4">
+              <span>{{x[4:]}}</span>
+            </th>
+            <td class="pl-4">
+              <span>pose.csv</span>
+            </td>
+            <td class="pr-4" style="text-align: right;">
+              <a href="/data_file_multimodal?v={{x[4:11]}}&t={{x[-13:]}}&n=pose.csv" style="color: red;">
+                <span>Download</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td class="pl-4">
+              <span>eye.csv</span>
+            </td>
+            <td class="pr-4" style="text-align: right;">
+              <a href="/data_file_multimodal?v={{x[4:11]}}&t={{x[-13:]}}&n=eye.csv" style="color: red;">
+                <span>Download</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td class="pl-4">
+              <span>emotion.csv</span>
+            </td>
+            <td class="pr-4" style="text-align: right;">
+              <a href="/data_file_multimodal?v={{x[4:11]}}&t={{x[-13:]}}&n=emotion.csv" style="color: red;">
+                <span>Download</span>
+              </a>
+            </td>
+          </tr>
+          <tr>
+            <td class="pl-4">
+              <span>clickstream.csv</span>
+            </td>
+            <td class="pr-4" style="text-align: right;">
+              <a href="/data_file_multimodal?v={{x[4:11]}}&t={{x[-13:]}}&n=clickstream.csv" style="color: red;">
+                <span>Download</span>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+
+      <h6 class="mt-5"> Affective States Data </h6>
+      <table class="table border-bottom border-left border-right table-hover m-0" style="background-color: white; font-size: small;">
+        <tbody>
+          {% for x in affectivestates_files %}
+          <tr>
+            <td class="pl-4">
+              <span>{{x[17:]}}</span>
+            </td>
+            <td class="pr-4" style="text-align: right;">
+              <a href="/data_file_affectivestates?v={{x[-11:]}}" style="color: red;">
+                <span>Download</span>
+              </a>
+            </td>
+          </tr>
+          {% endfor %}
+        </tbody>
+      </table>
+    </div>
+  </div>
+
+  <!-- Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

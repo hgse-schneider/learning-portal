@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en" style="height: 100%;">
+
+<head>
+  {% include 'head.html' %}
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/062c53c639.js" crossorigin="anonymous"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
+
+  <!-- Video.js -->
+  <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
+
+  <!-- Posenet -->
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow/tfjs"></script>
+  <script src="https://cdn.jsdelivr.net/npm/@tensorflow-models/posenet"></script>
+
+  <!-- Emotion Detection -->
+  <script type="text/javascript" src="{{ url_for('static', filename='build/face-api.min.js') }}"></script>
+
+  <!-- Webgazer -->
+  <script type="text/javascript" src="{{ url_for('static', filename='build/webgazer.js') }}"></script>
+
+  <!-- Socket -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/2.3.0/socket.io.js" integrity="sha512-v8ng/uGxkge3d1IJuEo6dJP8JViyvms0cly9pnbfRxT6/31c3dRWxIiwGnMSWwZjHKOuY3EVmijs7k1jz/9bLA==" crossorigin="anonymous"></script>
+
+  <!-- Chart.js -->
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.5.0/Chart.min.js"></script>
+
+  <title>LIT Lab Learning Portal</title>
+
+  <style>
+    button {
+      outline: 0;
+      box-shadow: none;
+      border: none;
+    }
+    
+    button:focus {
+      outline: 0;
+    }
+    
+    button:hover {
+      background-color: #EFEFEF;
+    }
+    
+    .vis_labels {
+      font-size: small;
+      width: fit-content;
+      margin: 10px 0 10px 10px;
+      padding: 5px 10px 5px 10px;
+      border-radius: 5px;
+    }
+  </style>
+</head>
+
+<body style="display: flex; flex-flow: column; height: 100%; background-color: #F8F8F9; width: 100%; overflow: hidden;">
+  {% include 'navbar.html' %}
+
+  <video id="video" playsinline style="display: none;"></video>
+
+  <div style="flex-grow: 1; height: 100%; width: 100%;">
+    <div style="display: flex; height: 100%;">
+      <div id="sidebar" class="sidebar shadow-sm" style="padding: 25px; overflow-y: scroll;">
+        <div id="menu-btn" class="menu-btn open">
+          <div class="menu-btn__burger"></div>
+        </div>
+
+        <button id="sidebar_vid_button" disabled onclick="document.getElementById('body_graph_container').hidden = true; try{document.getElementById('documentation_div').hidden = true;}catch{} document.getElementById('body_video_container').hidden = false;" class="btn shadow-none text-left pl-3 mt-4 py-2 rounded-pill">
+          <h6 class="my-0 ml-0 py-1">Video</h6>
+        </button>
+        <p style="font-size:small; font-weight: bold;" class="ml-4 pl-2 pt-2 mb-2">How are you feeling?</p>
+        <button disabled id="frustrated" class="feeling_item rounded-pill px-0 my-1 ml-4">
+          <div style="display: table-cell; vertical-align: middle; text-align: left;">
+            <div id="frustrated_counter" class="affective_counter d-table-cell text-center align-middle rounded-circle">0</div>
+            <div class="d-table-cell align-middle pl-2">Frustrated</div>
+          </div>
+        </button>
+        <button disabled id="lost" class="feeling_item rounded-pill px-0 my-1 ml-4">
+          <div style="display: table-cell; vertical-align: middle; text-align: left;">
+            <div id="lost_counter" class="affective_counter d-table-cell text-center align-middle rounded-circle">0</div>
+            <div class="d-table-cell align-middle pl-2">Confused</div>
+          </div>
+        </button>
+        <button disabled id="lostinterest" class="feeling_item rounded-pill px-0 my-1 ml-4">
+          <div style="display: table-cell; vertical-align: middle; text-align: left;">
+            <div id="lostinterest_counter" class="affective_counter d-table-cell text-center align-middle rounded-circle">0</div>
+            <div class="d-table-cell align-middle pl-2">Bored</div>
+          </div>
+        </button>
+        <button disabled id="intrigued" class="feeling_item rounded-pill px-0 my-1 ml-4">
+          <div style="display: table-cell; vertical-align: middle; text-align: left;">
+            <div id="intrigued_counter" class="affective_counter d-table-cell text-center align-middle rounded-circle">0</div>
+            <div class="d-table-cell align-middle pl-2">Interested</div>
+          </div>
+        </button>
+        <button disabled id="excited" class="feeling_item rounded-pill px-0 my-1 ml-4">
+          <div style="display: table-cell; vertical-align: middle; text-align: left;">
+            <div id="excited_counter" class="affective_counter d-table-cell text-center align-middle rounded-circle">0</div>
+            <div class="d-table-cell align-middle pl-2">Inspired</div>
+          </div>
+        </button>
+        <button disabled id="aha" class="feeling_item rounded-pill px-0 my-1 ml-4">
+          <div style="display: table-cell; vertical-align: middle; text-align: left;">
+            <div id="aha_counter" class="affective_counter d-table-cell text-center align-middle rounded-circle">0</div>
+            <div class="d-table-cell align-middle pl-2">Ah-ha!</div>
+          </div>
+        </button>
+
+        <button disabled id="feeling_summary" class="btn shadow-none text-left pl-3 mt-3 py-2 rounded-pill">
+          <h6 class="my-0 ml-0 py-1">View your summary</h6>
+        </button>
+      </div>
+
+      <div hidden id="body_graph_container" class="py-5 mb-5" style="display: flex; flex-direction: column; width: 100%; overflow: scroll;">
+        <div class="px-5 pb-5">
+          <h4 class="pb-4">Summary</h4>
+          <div class="vis_labels" style="background-color: #57C7C3;">Your summary</div>
+          <div class="shadow-sm bg-white px-4 py-4 mb-1" style="width: fit-content !important;">
+            <div id="chartContainer" style="position: relative; height: 45vh; width: 45vw;"></div>
+          </div>
+          <div class="vis_labels" style="background-color: #47b5ff; margin-top: 30px;">Class summary</div>
+          <div class="shadow-sm bg-white px-4 py-4" style="width: fit-content !important;">
+            <div id="chartContainer2" style="position: relative; height: 45vh; width: 45vw;"></div>
+          </div>
+        </div>
+      </div>
+
+      <div id="body_video_container" class="pt-5" style="display: flex; flex-direction: column; width: 100%; overflow: scroll;">
+        <div id="setting_gear" class="mx-auto my-auto">
+          <img id="setting_gear_image" style="width: 70px; height: auto; opacity: 50%;" src="{{url_for('static', filename='img/gear.gif')}}" />
+          <span id="setting_gear_text" class="text-secondary" style="font-size: small;">Setting up...</span>
+        </div>
+        <div id="instructional_video" hidden>
+
+          <div class="mx-5 pb-4">
+            <h4>{{video_name}}</h4>
+          </div>
+
+          <div class="px-5" style="width: 50vw;">
+            <video style="outline: none;" class="video-js vjs-fluid vjs-big-play-centered mb-4" id="my-video" poster="{{url_for('static', filename='videos/thumbnails/'+video+thumbnail_extension)}}" controls preload="auto">
+              <source src="{{url_for('static', filename='videos/videos/' + video +'.mp4')}}" type="video/mp4" />
+              <p class="vjs-no-js">
+                To view this video please enable JavaScript, and consider upgrading to a
+                web browser that
+                <a href="https://videojs.com/html5-video-support/" target="_blank">
+                  supports HTML5 video
+                </a>
+              </p>
+            </video>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <!-- Video.js -->
+  <script src="https://vjs.zencdn.net/7.8.4/video.js"></script>
+  <script src="https://cdn.sc.gl/videojs-hotkeys/0.2/videojs.hotkeys.min.js"></script>
+
+  <!-- Data Collection -->
+  <script type="module" src="{{ url_for('static', filename='watch.js') }}"></script>
+
+  <!-- Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</body>
+
+</html>

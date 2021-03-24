@@ -1,0 +1,97 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  {% include 'head.html' %}
+
+  <!-- Font Awesome -->
+  <script src="https://kit.fontawesome.com/062c53c639.js" crossorigin="anonymous"></script>
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="{{ url_for('static', filename='css/global.css') }}" />
+
+  <!-- Video.js -->
+  <link href="https://vjs.zencdn.net/7.8.4/video-js.css" rel="stylesheet" />
+
+  <title>LIT Lab Learning Portal</title>
+
+  <style>
+    button:focus {
+      outline: 0;
+    }
+    
+    button:hover {
+      background-color: #EFEFEF;
+    }
+  </style>
+</head>
+
+<body style="background-color: #F8F8F9;">
+  {% include 'navbar.html' %}
+
+  <div class="container-fluid px-5">
+    <div class="mr-5 pr-5" style="display: flex; flex-direction: row; justify-content: space-between; align-items:baseline;">
+      <h1 class="pt-2 mb-4 ml-5 pl-5"> {{video['name']}} </h1>
+    </div>
+
+    <div class="container">
+      <div class="shadow py-4 px-5 bg-white " style="border-radius: 20px;">
+
+        <div class="row">
+          <div class="col-sm">
+            <video style="outline: none; height: auto;" class="video-js vjs-fluid vjs-big-play-centered mb-4" id="my-video" poster="{{url_for('static', filename='videos/thumbnails/'+id+video['thumbnail_extension'])}}" controls preload="auto">
+            <source src="{{url_for('static', filename='videos/videos/' + id +'.mp4')}}" type="video/mp4" />
+            <p class="vjs-no-js">
+              To view this video please enable JavaScript, and consider upgrading to a
+              web browser that
+              <a href="https://videojs.com/html5-video-support/" target="_blank">
+                supports HTML5 video
+              </a>
+            </p>
+          </video>
+          </div>
+          <div class="col-sm">
+            <form action="/videos/edit-video?id={{id}}" method="POST" enctype="multipart/form-data">
+              <div class="form-group row">
+                <label for="title">Title</label>
+                <input oninput="document.getElementById('submit').disabled = false;" value="{{video['name']}}" required id="title" name="title" type="text" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Video Title">
+              </div>
+              <div class="form-group row">
+                <label for="caption">Caption</label>
+                <input oninput="document.getElementById('submit').disabled = false;" value="{{video['caption']}}" required id="caption" name="caption" type="text" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;"
+                  placeholder="Caption">
+              </div>
+              <div class="form-group row">
+                <label for="thumbnail">Thumbnail</label>
+                <input oninput="document.getElementById('submit').disabled = false;" id="thumbnail" name="thumbnail" type="file" accept="image/*">
+                <img style="width: auto; height: 80px;" src="{{url_for('static', filename='videos/thumbnails/'+id+video['thumbnail_extension'])}}" />
+              </div>
+              {% if success %}
+              <div>
+                <small class="text-success">{{success}}</small>
+              </div>
+              {% endif %}
+              <div class="text-center mt-4">
+                <button disabled id="submit" type="submit" class="btn py-2 px-4 rounded-pill" style="background-color: #1974E8; color: white;">Save Changes</button>
+              </div>
+            </form>
+            <a href="/videos/delete-video?id={{id}}">
+              <button class="btn btn-danger" style="font-size: small;"> Delete Video</button>
+            </a>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="px-5 ml-5" style="width: 50vw;">
+    </div>
+  </div>
+
+  <!-- Bootstrap -->
+  <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
+  <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
+  <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.5.2/js/bootstrap.min.js" integrity="sha384-B4gt1jrGC7Jh4AgTPSdUtOBvfO8shuf57BaghqFfPlYxofvL8/KUEfYiJOMMV+rV" crossorigin="anonymous"></script>
+
+</body>
+
+</html>
