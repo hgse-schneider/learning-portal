@@ -5,10 +5,10 @@
 
   <div class="btn-group mr-2">
     <button type="button" class="btn rounded shadow-none" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">
-      {{firstname}} {{lastname}}
+      {{user_details['firstname']}} {{user_details['lastname']}}
     </button>
     <div style="border: none;" class="shadow-sm dropdown-menu dropdown-menu-right">
-      <a class="dropdown-item" style="font-size: small;" href="/data">View Your Data</a> {% if type == "admin" %}
+      <a class="dropdown-item" style="font-size: small;" href="/data">View Your Data</a> {% if user_details['type'] == "admin" %}
       <a class="dropdown-item" style="font-size: small;" href="/admin">Site administration</a> {% endif %}
       <div class="dropdown-divider"></div>
       <a class="dropdown-item" style="font-size: small;" href="/signout">Sign Out</a>

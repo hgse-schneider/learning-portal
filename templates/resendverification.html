@@ -6,6 +6,9 @@
 
   <title>LIT Lab Learning Portal</title>
 
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+
   <style>
     button:focus {
       outline: 0;
@@ -22,20 +25,18 @@
           <img src="{{url_for('static', filename='img/LIT_Logo_Bulb.png')}}" style="height: 100px;" />
         </div>
         <h2 class="text-center mt-1 mb-5"> Resend Verification Email </h2>
-        <form action="/resendverification" method="POST">
+        <form action="javascript:resendVerification()">
           <div class="form-group">
             <label class="mx-2 mb-3">Enter the email address and password associated with your account and we’ll send you a link for verification</label>
-            <input value="{{email}}" required name="email" type="email" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Email Address">
+            <input autocomplete="username" id="email" required name="email" type="email" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Email Address">
           </div>
           <div class="form-group">
-            <input required name="password" type="password" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Password">
+            <input autocomplete="current-password" id="password" required name="password" type="password" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Password">
           </div>
 
-          {% if error %}
           <div class="mx-2">
-            <small class="text-danger">{{error}}</small>
+            <small id="danger" class="text-danger"></small>
           </div>
-          {% endif %}
 
           <div class="text-center mt-4 mb-2">
             <button type="submit" class="btn py-2 px-4 rounded-pill" style="background-color: #1974E8; color: white;">Email me a recovery link</button>
@@ -44,6 +45,8 @@
       </div>
     </div>
   </div>
+
+  <script src="{{url_for('static', filename='resendverification.js')}}"></script>
 
   <!-- Bootstrap -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

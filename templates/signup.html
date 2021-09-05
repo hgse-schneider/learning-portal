@@ -6,6 +6,9 @@
 
   <title>LIT Lab Learning Portal</title>
 
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-app.js"></script>
+  <script src="https://www.gstatic.com/firebasejs/8.3.1/firebase-auth.js"></script>
+
   <style>
     button:focus {
       outline: 0;
@@ -14,7 +17,6 @@
 </head>
 
 <body class="h-100" style="background-color: #F8F8F9;">
-
   <div class="container h-100">
     <div class="row h-100 justify-content-center align-items-center">
       <div class="col-9 col-sm-9 col-md-7 col-lg-5 shadow py-4 px-5 bg-white " style="border-radius: 20px;">
@@ -22,31 +24,25 @@
           <img src="{{url_for('static', filename='img/LIT_Logo_Bulb.png')}}" style="height: 100px;" />
         </div>
         <h1 class="text-center mt-1 mb-5"> Sign Up </h1>
-        <form action="/signup" method="POST">
+        <form action="javascript:signUp()">
           <div class="form-group row">
             <div class="col mr-n3">
-              <input value="{{firstname}}" required name="firstname" type="text" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="First Name">
+              <input id="firstname" required name="firstname" type="text" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="First Name">
             </div>
             <div class="col ">
-              <input value="{{lastname}}" required name="lastname" type="text" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Last Name">
+              <input id="lastname" required name="lastname" type="text" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Last Name">
             </div>
           </div>
           <div class="form-group">
-            <input value="{{email}}" required name="email" type="email" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Email Address">
+            <input id="email" required name="email" type="email" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Email Address">
           </div>
           <div class="form-group">
-            <input required name="password" type="password" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Password">
+            <input id="password" required name="password" type="password" pattern=".{6,}" title="Password must have at least 6 characters" class="form-control shadow-none px-4 py-4 rounded-pill" style="background-color: #EFEFEF; border: none;" placeholder="Password">
           </div>
 
-          {% if error == 'true' and errormessage == 'This email already exists!' %}
           <div class="mx-2">
-            <small class="text-danger">{{errormessage}} Did you mean to <a href="/signin" class="text-danger"><u>sign in</u></a>?</small>
+            <small id="danger" class="text-danger"></small>
           </div>
-          {% elif error == 'true' %}
-          <div class="mx-2">
-            <small class="text-danger">{{errormessage}}</small>
-          </div>
-          {% endif %}
 
           <div class="text-center mt-4">
             <button type="submit" class="btn py-2 px-4 rounded-pill" style="background-color: #1974E8; color: white;">Create Account</button>
@@ -56,6 +52,8 @@
       </div>
     </div>
   </div>
+
+  <script src="{{url_for('static', filename='signup.js')}}"></script>
 
   <!-- Bootstrap -->
   <script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
